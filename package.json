@@ -1,0 +1,30 @@
+{
+  "name": "@j.u.p.iter/http-client",
+  "version": "0.0.1",
+  "main": "dist/lib/http-client.cjs.js",
+  "description": "Simple http client - axios wrapper",
+  "module": "dist/lib/http-client.esm.js",
+  "umd:main": "dist/lib/http-client.umd.min.js",
+  "repository": "git@github.com:j-u-p-iter/http-client.git",
+  "author": "Leontyev Kirill (j.u.p.iter) <pn79122821224@gmail.com> (http://j-u-p-iter.pro/)",
+  "license": "MIT",
+  "scripts": {
+    "commit": "jupiter-scripts precommit --allowJs",
+    "build": "jupiter-scripts build --bundle",
+    "start": "yarn run build --watch",
+    "lint": "jupiter-scripts lint --format codeFrame",
+    "lint:fix": "yarn run lint --fix",
+    "test": "jupiter-scripts test"
+  },
+  "devDependencies": {
+    "@j.u.p.iter/jupiter-scripts": "^1.14.1",
+    "@testing-library/react": "^9.4.0",
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.3",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2"
+  },
+  "dependencies": {
+    "axios": "^0.20.0"
+  }
+}
