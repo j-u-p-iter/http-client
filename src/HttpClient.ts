@@ -9,56 +9,70 @@
  * The goal of CustomAxiosPromise object is to extend AxiosPromise interface with additional "cancel" method.
  *
  */
-import { AxiosInstance, AxiosPromise } from "axios";
+import { AxiosStatic, AxiosPromise } from "axios";
 
 interface HttpClientInterface {
-  read: (path: string) => Promise<any>;
-  create: (path: string, data: any) => Promise<any>;
-  update: (path: string, data: any) => Promise<any>;
-  delete: (path: string) => Promise<any>;
-  upload: (path: string, data: any) => Promise<any>;
+  read: <T>(path: string) => CustomAxiosPromise<T>;
+  create: <T>(path: string, data: any) => CustomAxiosPromise<T>;
+  update: <T>(path: string, data: any) => CustomAxiosPromise<T>;
+  delete: <T>(path: string) => CustomAxiosPromise<T>;
+  upload: <T>(path: string, data: any) => CustomAxiosPromise<T>;
 }
-
-const makeCancellable = <T>(
-  request: AxiosPromise<T>
-): CustomAxiosPromise<T> => {
-  const cancellableRequest = {
-    ...request,
-    cancel: () => {}
-  };
-
-  return cancellableRequest;
-};
 
 interface CustomAxiosPromise<T> extends AxiosPromise<T> {
   cancel: () => void;
 }
 
 export class HttpClient implements HttpClientInterface {
-  constructor(private axios: AxiosInstance) {}
+  private makeCancellable<T>(
+    request: AxiosPromise<T>,
+    requestCancellator
+  ): CustomAxiosPromise<T> {
+    const cancellableRequest = {
+      ...request,
+      cancel: () => {
+        requestCancellator.cancell();
+      }
+    };
+
+    return cancellableRequest;
+  }
+
+  call<T>(params: { 
+    method: string;
+    path: string;
+    data?: any;
+    headers?: { [key: string]: any; },
+  }) {
+    const { method, path, data, headers } = params;
+
+    const requestCancellator = this.axios.CancelToken.source();
+
+    return this.makeCancellable<T>(
+      this.axios[method]<T>(path, data, { 
+        headers,
+        cancelToken: requestCancellator.token,
+      }),
+      requestCancellator
+    );
+  }
+
+  constructor(private axios: AxiosStatic) {}
 
   public read<T>(path: string): CustomAxiosPromise<T> {
-    const request = this.axios.get<T>(path);
-
-    return makeCancellable<T>(request);
+    return this.call<T>({ path, method: 'get' });
   }
 
   public create<T>(path: string, data: any): CustomAxiosPromise<T> {
-    const request = this.axios.post<T>(path, data);
-
-    return makeCancellable<T>(request);
+    return this.call<T>({ path, data, method: 'post' });
   }
 
   public update<T>(path: string, data: any): CustomAxiosPromise<T> {
-    const request = this.axios.put<T>(path, data);
-
-    return makeCancellable<T>(request);
+    return this.call<T>({ path, data, method: 'put' });
   }
 
   public delete<T>(path: string): CustomAxiosPromise<T> {
-    const request = this.axios.put<T>(path);
-
-    return makeCancellable<T>(request);
+    return this.call<T>({ path, method: 'delete' });
   }
 
   public upload<T>(path: string, files: File[]): CustomAxiosPromise<T> {
@@ -68,12 +82,11 @@ export class HttpClient implements HttpClientInterface {
       formData.append(`files[${index}]`, file);
     });
 
-    const request = this.axios.post<T>(path, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
+    return this.call<T>({
+      path,
+      method: 'post',
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
-
-    return makeCancellable<T>(request);
   }
 }
