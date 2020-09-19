@@ -1,0 +1,9 @@
+{
+  "posts": [{
+    "title": "Some title",
+    "description": "Some description"
+  }, {
+    "title": "One more title",
+    "description": "One more description"
+  }]
+}
