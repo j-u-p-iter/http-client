@@ -14,7 +14,10 @@
     "start": "yarn run build --watch",
     "lint": "jupiter-scripts lint --format codeFrame",
     "lint:fix": "yarn run lint --fix",
-    "test": "jupiter-scripts test"
+    "test": "jupiter-scripts test",
+    "start:client": "parcel ./examples/index.html",
+    "start:server": "json-server ./examples/db.json",
+    "start:examples": "yarn start:client & yarn start:server"
   },
   "devDependencies": {
     "@j.u.p.iter/jupiter-scripts": "^1.14.1",
