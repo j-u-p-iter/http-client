@@ -9,7 +9,7 @@
  * The goal of CustomAxiosPromise object is to extend AxiosPromise interface with additional "cancel" method.
  *
  */
-import { AxiosStatic, AxiosPromise } from "axios";
+import { AxiosPromise, AxiosStatic } from "axios";
 
 interface HttpClientInterface {
   read: <T>(path: string) => CustomAxiosPromise<T>;
@@ -38,20 +38,20 @@ export class HttpClient implements HttpClientInterface {
     return cancellableRequest;
   }
 
-  call<T>(params: { 
+  call<T>(params: {
     method: string;
     path: string;
     data?: any;
-    headers?: { [key: string]: any; },
+    headers?: { [key: string]: any };
   }) {
     const { method, path, data, headers } = params;
 
     const requestCancellator = this.axios.CancelToken.source();
 
     return this.makeCancellable<T>(
-      this.axios[method]<T>(path, data, { 
+      this.axios[method]<T>(path, data, {
         headers,
-        cancelToken: requestCancellator.token,
+        cancelToken: requestCancellator.token
       }),
       requestCancellator
     );
@@ -60,19 +60,19 @@ export class HttpClient implements HttpClientInterface {
   constructor(private axios: AxiosStatic) {}
 
   public read<T>(path: string): CustomAxiosPromise<T> {
-    return this.call<T>({ path, method: 'get' });
+    return this.call<T>({ path, method: "get" });
   }
 
   public create<T>(path: string, data: any): CustomAxiosPromise<T> {
-    return this.call<T>({ path, data, method: 'post' });
+    return this.call<T>({ path, data, method: "post" });
   }
 
   public update<T>(path: string, data: any): CustomAxiosPromise<T> {
-    return this.call<T>({ path, data, method: 'put' });
+    return this.call<T>({ path, data, method: "put" });
   }
 
   public delete<T>(path: string): CustomAxiosPromise<T> {
-    return this.call<T>({ path, method: 'delete' });
+    return this.call<T>({ path, method: "delete" });
   }
 
   public upload<T>(path: string, files: File[]): CustomAxiosPromise<T> {
@@ -84,9 +84,9 @@ export class HttpClient implements HttpClientInterface {
 
     return this.call<T>({
       path,
-      method: 'post',
+      method: "post",
       data: formData,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" }
     });
   }
 }

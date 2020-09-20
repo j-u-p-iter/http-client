@@ -15,8 +15,9 @@
     "lint": "jupiter-scripts lint --format codeFrame",
     "lint:fix": "yarn run lint --fix",
     "test": "jupiter-scripts test",
-    "server:start": "json-server -p 8000 ./examples/db.json --delay 3000",
-    "client:start": "parcel ./examples/client/index.html -p 8001"
+    "start:client": "parcel ./example/client/index.html -p 8001",
+    "start:server": "json-server -p 8000 ./examples/db.json --delay 3000",
+    "start:example": "yarn start:client & yarn start:server"
   },
   "devDependencies": {
     "@j.u.p.iter/jupiter-scripts": "^1.14.1",
