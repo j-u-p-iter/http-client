@@ -21,6 +21,27 @@ With `http-client` library, you can:
 
 using only one method.
 
+## Example
 
+```typescript
+const httpClient = new HttpClient();
 
+// Performing a GET request
+try {
+  const { data: posts } = await httpClient.get('/posts');
+  
+  console.log(posts);
+} catch(error) {
+  console.log(error);
+}
+
+// Performing a POST request
+try {
+  const { data: newPost } = await httpClient.post('/posts/1', { title: 'Some title', description: 'Some description' });
+  
+  console.log(newPost);
+} catch(error) {
+  console.log(error);
+}
+```
 
