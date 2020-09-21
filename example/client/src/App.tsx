@@ -1,5 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
+import faker from 'faker';
 
 import { HttpClient } from '../../../src'
 
@@ -14,30 +15,48 @@ interface Post {
 
 type Posts  = Post[];
 
+const createUrl = (path) => {
+  return `http://localhost:8000/${path}`
+}
+
 export const App: React.FC = () => {
   const [posts, setPosts] = useState<Posts>([]);
 
   const readAllPosts = async () => {
-    const posts = await httpClient.read('/posts');
+    const request = httpClient.read(createUrl('posts'));
 
-    setPosts(posts);
+    const result = await request;
+
+    setPosts(result.data);
   }
 
-  const addRandomPost = () => {
-    httpClient.add('/posts', {
-      title: 'some random title',
-      description: 'some random description',
+  const addRandomPost = async () => {
+    const { data: newPost } = await httpClient.create(createUrl('posts'), {
+      title: faker.lorem.word(),
+      description: faker.lorem.text(),
     });
+
+    setPosts([...posts, newPost]);
   }
 
-  const updatePostWithRandomData = (postId) => {
-    httpClient.update(
-      `/posts/${postId}`, 
+  const updatePostWithRandomData = async (postId, onUpdatePost) => {
+    const { data: updatedPost } = await httpClient.update(
+      createUrl(`posts/${postId}`),
       { 
-        title: 'some random title' 
-        description: 'some random description',
+        title: faker.lorem.word() 
+        description: faker.lorem.text(),
       },
     );
+
+    setPosts(posts.map((post) => {
+      return post.id !== updatedPost.id ? post : updatedPost;
+    }));
+  }
+
+  const deletePost = async (postId) => {
+    await httpClient.delete(createUrl(`posts/${postId}`));
+
+    setPosts(posts.filter((post) => post.id !== postId));
   }
 
   useEffect(() => {
@@ -47,20 +66,23 @@ export const App: React.FC = () => {
   return (
     <>
       <ul>
-        {posts.map(({ title, description }) => {
+        {posts.map(({ id, title, description }) => {
           return (
-            <li>
+            <li key={id}>
               <h2>{title}</h2>
               <p>{description}</p>
               <div>
-                <button>Update post with random data</button>
+                <button onClick={() => updatePostWithRandomData(id)}>Update post with random data</button>
+                <button onClick={() => deletePost(id)}>Delete post</button>
               </div>
             </li>
           )
         })}
       </ul>
 
-      <button>Add new random post</button> 
+      <button onClick={() => addRandomPost()}>
+        Add new random post
+      </button> 
     </>
   )
 }
