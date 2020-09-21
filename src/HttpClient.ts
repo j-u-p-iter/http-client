@@ -28,11 +28,11 @@ export class HttpClient implements HttpClientInterface {
     request: AxiosPromise<T>,
     requestCancellator
   ): CustomAxiosPromise<T> {
-    request.cancel = () => {
+    (request as any).cancel = () => {
       requestCancellator.cancel();
-    }
+    };
 
-    return request;
+    return request as CustomAxiosPromise<T>;
   }
 
   call<T>(params: {
@@ -50,7 +50,9 @@ export class HttpClient implements HttpClientInterface {
       cancelToken: requestCancellator.token
     };
 
-    const args = data ? [path, data, additionalParams] : [path, additionalParams]
+    const args = data
+      ? [path, data, additionalParams]
+      : [path, additionalParams];
 
     return this.makeCancellable<T>(
       this.axios[method]<T>(...args),
