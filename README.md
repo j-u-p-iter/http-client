@@ -80,7 +80,7 @@ Several notes about a GET request:
 
 ```typescript
 try {
-  const { data: newPost } = await httpClient.add('/posts/1', { 
+  const { data: newPost } = await httpClient.update('/posts/1', { 
     title: 'Some title', 
     description: 'Some description' 
   });
@@ -97,7 +97,7 @@ try {
 const httpClient = new HttpClient();
 
 // Sends POST request
-const request = httpClient.read('/posts');
+const request = httpClient.add('/posts');
 
 // And immediately cancels it
 request.cancel();
@@ -105,7 +105,7 @@ request.cancel();
 // After you cancel a request, an attempt to resolve it 
 // throws an error
 try {
-  const { data: posts } = await request;
+  const { data: createdPost } = await request;
 } catch(error) {
   console.log(error);
 }
@@ -113,7 +113,7 @@ try {
 
 Several notes about a POST request:
 
-- to send a POST request you should call an `update` method;
+- to send a POST request you should call an `add` method;
 - cancelling a request throws an error, you should catch and handle somehow.
 
 ```typescript
