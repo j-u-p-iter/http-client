@@ -161,6 +161,11 @@ try {
 }
 ```
 
+Several notes about a PUT request:
+
+- to send PUT request you should call an `update` method;
+- cancelling a request throws an error, you should catch and handle somehow.
+
 ### DELETE request
 
 #### Performing a DELETE request
@@ -175,8 +180,8 @@ try {
 }
 ```
 
-#### Cancelling a DELETE request
+Several notes about the DELETE request:
 
-
-
+- to send the DELETE request you should call an `delete` method;
+- for some reason the DELETE request can't be cancelled, because of an issue. More info about this issue you can find [here](https://github.com/axios/axios/issues/2720). 
 
