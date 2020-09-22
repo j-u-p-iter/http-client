@@ -69,9 +69,9 @@ try {
 }
 ```
 
-Several notes about a GET request:
+Several notes about the GET request:
 
-- to send GET request you should call a `read` method;
+- to send the GET request you should call a `read` method;
 - cancelling a request throws an error, you should catch and handle somehow.
 
 ### POST request
@@ -115,9 +115,9 @@ try {
 }
 ```
 
-Several notes about a POST request:
+Several notes about the POST request:
 
-- to send a POST request you should call an `add` method;
+- to send the POST request you should call an `add` method;
 - cancelling a request throws an error, you should catch and handle somehow.
 
 ### PUT request
@@ -161,9 +161,9 @@ try {
 }
 ```
 
-Several notes about a PUT request:
+Several notes about the PUT request:
 
-- to send PUT request you should call an `update` method;
+- to send the PUT request you should call an `update` method;
 - cancelling a request throws an error, you should catch and handle somehow.
 
 ### DELETE request
