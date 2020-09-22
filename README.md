@@ -82,7 +82,7 @@ Several notes about the GET request:
 const httpClient = new HttpClient();
 
 try {
-  const { data: newPost } = await httpClient.update('/posts/1', { 
+  const { data: newPost } = await httpClient.add('/posts/1', { 
     title: 'Some title', 
     description: 'Some description' 
   });
