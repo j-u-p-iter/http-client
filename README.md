@@ -49,7 +49,7 @@ try {
 }
 ```
 
-### Cancelling a GET request
+#### Cancelling a GET request
 
 ```typescript
 const httpClient = new HttpClient();
@@ -57,7 +57,7 @@ const httpClient = new HttpClient();
 // Sends GET request
 const request = httpClient.read('/posts');
 
-// And immediately cancels itt
+// And immediately cancels it
 request.cancel();
 
 // After you cancel a request, an attempt to resolve it 
@@ -69,24 +69,54 @@ try {
 }
 ```
 
-Several notes about GET request:
+Several notes about a GET request:
 
-- to send GET request you should call `read` method;
+- to send GET request you should call a `read` method;
 - cancelling a request throws an error, you should catch and handle somehow.
 
-```typescript
+### POST request
 
-// Performing a POST request
+#### Performing a POST request
+
+```typescript
 try {
   const { data: newPost } = await httpClient.add('/posts/1', { 
     title: 'Some title', 
     description: 'Some description' 
-   });
+  });
   
   console.log(newPost);
 } catch(error) {
   console.log(error);
 }
+```
+
+#### Cancelling a POST request
+
+```typescript
+const httpClient = new HttpClient();
+
+// Sends POST request
+const request = httpClient.read('/posts');
+
+// And immediately cancels it
+request.cancel();
+
+// After you cancel a request, an attempt to resolve it 
+// throws an error
+try {
+  const { data: posts } = await request;
+} catch(error) {
+  console.log(error);
+}
+```
+
+Several notes about a POST request:
+
+- to send a POST request you should call an `update` method;
+- cancelling a request throws an error, you should catch and handle somehow.
+
+```typescript
 
 // Performing a PUT request
 
