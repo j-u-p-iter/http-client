@@ -8,7 +8,7 @@ Well, actually you don't have to use `axios`. You can utilize `fetch` and make i
 
 The thing is I use axios actively in two absolutely different environments. And if I used `fetch` in the browser I would have to use two different approaches, switching between browser and NodeJS. And, oh well, it's inconvinient to me.
 
-So, I continue using axios and I'm pretty sure, that is still very useful and amazing thing to use.
+So, I continue using axios and I'm pretty sure, that it is still very useful and amazing thing to use.
 
 `http-client` package was created to make `axios` even more amazing. Let's first of all talk about issues of using pure `axios`.
 
