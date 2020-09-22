@@ -69,6 +69,11 @@ try {
 }
 ```
 
+Several notes about GET request:
+
+- to send GET request you should call `read` method;
+- cancelling a request throws an error, you should catch and handle somehow.
+
 ```typescript
 
 // Performing a POST request
