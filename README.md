@@ -79,6 +79,8 @@ Several notes about a GET request:
 #### Performing a POST request
 
 ```typescript
+const httpClient = new HttpClient();
+
 try {
   const { data: newPost } = await httpClient.update('/posts/1', { 
     title: 'Some title', 
@@ -96,8 +98,10 @@ try {
 ```typescript
 const httpClient = new HttpClient();
 
-// Sends POST request
-const request = httpClient.add('/posts');
+const request = httpClient.add('/posts', { 
+  title: 'Some title', 
+  description: 'Some description' 
+});
 
 // And immediately cancels it
 request.cancel();
@@ -116,9 +120,12 @@ Several notes about a POST request:
 - to send a POST request you should call an `add` method;
 - cancelling a request throws an error, you should catch and handle somehow.
 
-```typescript
+### PUT request
 
-// Performing a PUT request
+#### Performing a PUT request
+
+```typescript
+const httpClient = new HttpClient();
 
 try {
   const { data: updatedPost } = await httpClient.update('/posts/1', { 
@@ -130,13 +137,46 @@ try {
 } catch(error) {
   console.log(error);
 }
+```
 
-// Performing a DELETE request
+#### Cancelling a PUT request
+
+```typescript
+const httpClient = new HttpClient();
+
+const request = httpClient.update('/posts', { 
+  title: 'Updated title', 
+  description: 'Updated description' 
+});
+
+// And immediately cancels it
+request.cancel();
+
+// After you cancel a request, an attempt to resolve it 
+// throws an error
+try {
+  const { data: updatedPost } = await request;
+} catch(error) {
+  console.log(error);
+}
+```
+
+### DELETE request
+
+#### Performing a DELETE request
+
+```typescript
+const httpClient = new HttpClient();
+
 try {
   await httpClient.delete('posts/1');
 } catch(error) {
   console.log(error);
 }
 ```
+
+#### Cancelling a DELETE request
+
+
 
 
