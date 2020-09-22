@@ -33,10 +33,13 @@ using only one method.
 
 ## Example
 
+### GET request
+
+#### Performing a GET request
+
 ```typescript
 const httpClient = new HttpClient();
 
-// Performing a GET request
 try {
   const { data: posts } = await httpClient.read('/posts');
   
@@ -44,6 +47,29 @@ try {
 } catch(error) {
   console.log(error);
 }
+```
+
+### Cancelling a GET request
+
+```typescript
+const httpClient = new HttpClient();
+
+// Sends GET request
+const request = httpClient.read('/posts');
+
+// And immediately cancels itt
+request.cancel();
+
+// After you cancel a request, an attempt to resolve it 
+// throws an error
+try {
+  const { data: posts } = await request;
+} catch(error) {
+  console.log(error);
+}
+```
+
+```typescript
 
 // Performing a POST request
 try {
