@@ -28,7 +28,7 @@ const httpClient = new HttpClient();
 
 // Performing a GET request
 try {
-  const { data: posts } = await httpClient.get('/posts');
+  const { data: posts } = await httpClient.read('/posts');
   
   console.log(posts);
 } catch(error) {
@@ -37,11 +37,35 @@ try {
 
 // Performing a POST request
 try {
-  const { data: newPost } = await httpClient.post('/posts/1', { title: 'Some title', description: 'Some description' });
+  const { data: newPost } = await httpClient.add('/posts/1', { 
+    title: 'Some title', 
+    description: 'Some description' 
+   });
   
   console.log(newPost);
 } catch(error) {
   console.log(error);
 }
+
+// Performing a PUT request
+
+try {
+  const { data: updatedPost } = await httpClient.update('/posts/1', { 
+    title: 'Updated title', 
+    description: 'Updated description' 
+  });
+  
+  console.log(updatedPost);
+} catch(error) {
+  console.log(error);
+}
+
+// Performing a DELETE request
+try {
+  await httpClient.delete('posts/1');
+} catch(error) {
+  console.log(error);
+}
 ```
+
 
